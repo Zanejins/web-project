@@ -42,7 +42,7 @@ public class HttpToWeChatHandler implements HttpHandler {
 
     public static String getQRToken(){
         String apiKey = "wx626bb85ae061201d";
-        String apiSecret = "7bf4c57f0fc9aa72fee57454fe702849";
+        String apiSecret = "";
         String requestURL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + apiKey + "&secret=" + apiSecret;
         URL url1;
         try {
