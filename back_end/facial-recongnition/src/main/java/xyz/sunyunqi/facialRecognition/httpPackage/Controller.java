@@ -47,6 +47,7 @@ public class Controller {
         String res = jsonObject.toString();
         // return to the web
         byte[] responseContentByte = res.getBytes(StandardCharsets.UTF_8);
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         try {
             httpExchange.sendResponseHeaders(200, responseContentByte.length);
         } catch (IOException e) {
