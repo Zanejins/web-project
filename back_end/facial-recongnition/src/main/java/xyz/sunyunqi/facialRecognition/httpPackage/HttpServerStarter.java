@@ -1,5 +1,6 @@
 package xyz.sunyunqi.facialRecognition.httpPackage;
 
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -29,6 +30,9 @@ public class HttpServerStarter {
         httpServer.createContext("/checkSateServer", new CheckStateHttpHandler());
         httpServer.createContext("/infoGetHttpServer", new InfoGetHttpHandler());
         httpServer.createContext("/getCertainInfoServer", new getCertainInfoHttpHandler());
+        httpServer.createContext("/getAllContracts", new ContractsInfo());
+        httpServer.createContext("/getDetailContract", new DetailContractInfo());
+        httpServer.createContext("/sign", new HasSigned());
 
         // Sets the thread pool object for the server
         httpServer.setExecutor(Executors.newFixedThreadPool(10));

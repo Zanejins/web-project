@@ -99,6 +99,123 @@ public class SqlMaker {
         return jsonObject;
     }
 
+    // 获取所有合同基本信息的SQL查询
+    public static JSONObject getAllContracts(Connection conn, String user_id) {
+        JSONObject jsonObject = new JSONObject();
+        Statement statement;
 
+        // set the sql statement
+        String sql;
+        if(user_id == null){
+            sql = null;
+            jsonObject.put("code", 1);
+            return jsonObject;
+        }else{
+            sql = "SELECT * FROM contract c LEFT JOIN user_info u ON c.user_id = u.user_id" +
+                    " WHERE c.user_id = " + "\"" + user_id + "\"";
+        }
+        // try to sql
+        JSONArray jsonArray = new JSONArray();
+        try{
+            statement = conn.createStatement();
+            //String sql = "SELECT * FROM user_info"; // 查询指定用户的信息
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            // put the result into JsonObjet
+            while(resultSet.next()){
+                // put info into the temp json
+                JSONObject tempObj = new JSONObject();
+                tempObj.put("contract_id",resultSet.getString("contract_id"));
+                tempObj.put("party_A_name",resultSet.getString("party_A"));
+                tempObj.put("party_B_name",resultSet.getString("party_B"));
+                tempObj.put("contract_name",resultSet.getString("contract_name"));
+                tempObj.put("valid_period",resultSet.getDate("valid_period"));
+                tempObj.put("has_sign",resultSet.getInt("has_sign"));
+
+                // put it into array
+                jsonArray.put(tempObj);
+            }
+
+        }catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        jsonObject.put("code",0);   // 处理成功
+        jsonObject.put("contracts_info",jsonArray);
+        return jsonObject;
+
+    }
+
+    public static JSONObject getDetailContractInfo(Connection conn, String contract_id) {
+        JSONObject jsonObject = new JSONObject();
+        Statement statement;
+
+        // set the sql statement
+        String sql;
+        if(contract_id == null){
+            sql = null;
+            jsonObject.put("code", 1);
+            return jsonObject;
+        }else{
+            sql = "SELECT * FROM contract c" +
+                    " WHERE c.contract_id = " + "\"" + contract_id + "\"";
+        }
+        // try to sql
+        try{
+            statement = conn.createStatement();
+            //String sql = "SELECT * FROM user_info"; // 查询指定用户的信息
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            // put the result into JsonObjet
+            if(resultSet.next()){
+                // put info into the temp json
+                JSONObject tempObj = new JSONObject();
+                tempObj.put("contract_id",resultSet.getString("contract_id"));
+                tempObj.put("party_A_name",resultSet.getString("party_A"));
+                tempObj.put("party_B_name",resultSet.getString("party_B"));
+                tempObj.put("contract_name",resultSet.getString("contract_name"));
+                tempObj.put("URL",resultSet.getString("URL"));
+                tempObj.put("valid_period",resultSet.getDate("valid_period"));
+                tempObj.put("has_sign",resultSet.getInt("has_sign"));
+
+                // put it into array
+                jsonObject.put("code", 0);   // 处理成功
+                jsonObject.put("detail_info", tempObj); // 合同信息
+            }
+
+        }catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    public static JSONObject modifyHas_sign(Connection conn, String contract_id) {
+        JSONObject jsonObject = new JSONObject();
+        Statement statement;
+
+        // set the sql statement
+        String sql;
+        if(contract_id == null){
+            sql = null;
+            jsonObject.put("code", 1);
+            return jsonObject;
+        }else{
+            sql = "UPDATE contract SET has_sign = 1 WHERE contract_id = " + "\"" + contract_id + "\"";
+        }
+        // try to sql
+        try{
+            statement = conn.createStatement();
+            // 执行更新操作
+            int code = statement.executeUpdate(sql);
+
+            if(code == 0) { // 影响的行数为0
+                jsonObject.put("code", 1);   // 处理失败
+            }else{  // 影响的行数不为0
+                jsonObject.put("code", 0);   // 处理成功
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return jsonObject;
+    }
 
 }

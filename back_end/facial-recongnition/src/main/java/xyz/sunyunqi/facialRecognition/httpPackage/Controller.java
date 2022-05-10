@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author 孙蕴琦
@@ -35,6 +38,16 @@ public class Controller {
         }
 
         return requestBodyContent.toString();    // StringBuilder转成String类型
+    }
+
+
+    public static Map<String, String> getParams(String paramStr){
+        if(paramStr != null) {
+            return Stream.of(paramStr.split("&"))
+                    .filter(s -> s.split("=").length == 2 && s.split("=")[0].length() > 0 && s.split("=")[1].length() > 0)
+                    .collect(Collectors.toMap(x -> x.toString().split("=")[0], y -> y.toString().split("=")[1]));
+        }
+        return null;
     }
 
     /**

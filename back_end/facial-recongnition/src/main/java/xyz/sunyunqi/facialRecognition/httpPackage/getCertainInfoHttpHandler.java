@@ -20,6 +20,7 @@ public class getCertainInfoHttpHandler implements HttpHandler {
         String info = getRequest(httpExchange);
         // turn the info into json and get the user_id
         org.json.JSONObject jsonObject = getUserInfo(info);
+        // response the web
         responseWeb(httpExchange, jsonObject);
     }
 
