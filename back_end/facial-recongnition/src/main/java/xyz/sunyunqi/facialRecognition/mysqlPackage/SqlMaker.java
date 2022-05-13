@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static xyz.sunyunqi.facialRecognition.utils.JDBCUtils.close;
+
 public class SqlMaker {
 
     public static String checkIfSQL(JSONObject res){
@@ -141,6 +143,7 @@ public class SqlMaker {
         }
         jsonObject.put("code",0);   // 处理成功
         jsonObject.put("contracts_info",jsonArray);
+        close(conn);
         return jsonObject;
 
     }
@@ -185,6 +188,7 @@ public class SqlMaker {
         }catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+        close(conn);
         return jsonObject;
     }
 
@@ -215,6 +219,7 @@ public class SqlMaker {
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+        close(conn);
         return jsonObject;
     }
 
