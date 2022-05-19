@@ -8,7 +8,7 @@ UML用例图由UML建模元素及元素之间的关系构成。本系统拥有�
 
 ##### 活动图
 活动图表达了用户从登录到完成合同签署的全部过程。
-![活动图](img/活动图.png)
+![活动图](https://github.com/Zanejins/web-project/blob/main/web_modeling/activity_diagram.png)
 
 #### 内容建模
 
