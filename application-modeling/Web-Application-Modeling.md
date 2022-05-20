@@ -4,11 +4,11 @@
 
 ##### UML用例图
 UML用例图由UML建模元素及元素之间的关系构成。本系统拥有用户、管理员和系统三个角色，分别可以进行如下操作：
-![用例图](img/用例图.png)
+![用例图](https://github.com/Zanejins/web-project/blob/main/application-modeling/img/use_case_diagram.png)
 
 ##### 活动图
 活动图表达了用户从登录到完成合同签署的全部过程。
-![活动图](img/活动图.png)
+![活动图](https://github.com/Zanejins/web-project/blob/main/application-modeling/img/activity_diagram.png)
 
 #### 内容建模
 
