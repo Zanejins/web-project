@@ -2,6 +2,7 @@ import TabsView from '@/layouts/tabs/TabsView'
 import BlankView from '@/layouts/BlankView'
 import PageView from '@/layouts/PageView'
 import SignPage from '@/pages/sign/SignPage'
+import Details from '@/pages/sign/Details'
 
 // 路由配置
 const options = {
@@ -64,6 +65,25 @@ const options = {
               },
               component: () => import('@/pages/sign/ContractList')
             },
+
+            {
+              path: 'ViewInfo',
+              name: "可视化数据",
+              meta:{
+                icon: 'file-protect',
+                id: '',
+              },
+              component: () => import('@/pages/ViewInfo/ViewInfo.vue')
+            },
+            {
+              path:'template',
+              name:'模板管理',
+              meta:{
+                icon:'container',
+                id:'',
+              },
+              component:() => import('@/pages/contrasts/contrasts.vue')
+            },
             {
               path: 'contract/:id/sign',
               name: "签字",
@@ -73,6 +93,16 @@ const options = {
                 invisible: true
               },
               component: SignPage
+            },
+            {
+              path: 'contract/:id/details',
+              name: "合同",
+              meta:{
+                icon: 'edit',
+                id: '',
+                invisible: true
+              },
+              component: Details
             }
           ]
         },

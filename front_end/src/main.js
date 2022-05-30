@@ -12,13 +12,19 @@ import {initI18n} from '@/utils/i18n'
 import bootstrap from '@/bootstrap'
 import 'moment/locale/zh-cn'
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
 const router = initRouter(store.state.setting.asyncRoutes)
 const i18n = initI18n('CN', 'US')
-
+import axios from 'axios'
+Vue.prototype.$http=axios
 Vue.use(Antd)
 Vue.config.productionTip = false
 Vue.use(Viser)
 Vue.use(Plugins)
+Vue.use(axios)
+Vue.use(ElementUI)
 
 bootstrap({router, store, i18n, message: Vue.prototype.$message})
 
