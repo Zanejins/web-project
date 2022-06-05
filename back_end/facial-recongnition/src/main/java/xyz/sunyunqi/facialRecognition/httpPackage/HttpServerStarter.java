@@ -33,6 +33,7 @@ public class HttpServerStarter {
         httpServer.createContext("/getAllContracts", new ContractsInfo());
         httpServer.createContext("/getDetailContract", new DetailContractInfo());
         httpServer.createContext("/sign", new HasSigned());
+        httpServer.createContext("/uploadtemplate", new uploadtemplate());
 
         // Sets the thread pool object for the server
         httpServer.setExecutor(Executors.newFixedThreadPool(10));

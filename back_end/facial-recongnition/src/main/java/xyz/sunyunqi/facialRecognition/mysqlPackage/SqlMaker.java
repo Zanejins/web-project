@@ -192,7 +192,7 @@ public class SqlMaker {
         return jsonObject;
     }
 
-    public static JSONObject modifyHas_sign(Connection conn, String contract_id) {
+    public static JSONObject modifyHas_sign(Connection conn, String contract_id, String URL) {
         JSONObject jsonObject = new JSONObject();
         Statement statement;
 
@@ -203,8 +203,34 @@ public class SqlMaker {
             jsonObject.put("code", 1);
             return jsonObject;
         }else{
-            sql = "UPDATE contract SET has_sign = 1 WHERE contract_id = " + "\"" + contract_id + "\"";
+            sql = "UPDATE contract SET has_sign = 1 , URL = " + "\"" + URL + "\"" + " WHERE contract_id = " + "\"" + contract_id + "\"";
         }
+        // try to sql
+        try{
+            statement = conn.createStatement();
+            // 执行更新操作
+            int code = statement.executeUpdate(sql);
+
+            if(code == 0) { // 影响的行数为0
+                jsonObject.put("code", 1);   // 处理失败
+            }else{  // 影响的行数不为0
+                jsonObject.put("code", 0);   // 处理成功
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        close(conn);
+        return jsonObject;
+    }
+
+    public static JSONObject insertNewContract(Connection conn, String type, String URL, String templateName) {
+        JSONObject jsonObject = new JSONObject();
+        Statement statement;
+
+        // set the sql statement
+
+        String sql = "INSERT INTO contract_template  VALUES (NULL, " +  type +  ",\"" + URL + "\"" + ", \"" + templateName +"\")";
+
         // try to sql
         try{
             statement = conn.createStatement();
