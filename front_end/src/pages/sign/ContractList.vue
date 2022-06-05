@@ -2,96 +2,243 @@
     <div>
       <a-card :bordered="false">
         <div style="display: flex; flex-wrap: wrap">
-            <head-info title="合同总数" :content="contracts.length" :bordered="true"/>
-            <head-info title="待签署" :content="getUnsignedNumber" :bordered="true"/>
+          <a-button-group style="text-align: center">
+            <a-button type="primary" v-on:click="total_contracts" style="width: 150px">全部合同</a-button>
+            <a-button v-on:click="rent_contracts" style="width: 150px">租赁合同</a-button>
+            <a-button v-on:click="borrow_contracts" style="width: 150px">借款合同</a-button>
+            <a-button v-on:click="give_contracts" style="width: 150px">赠与合同</a-button>
+            <a-button v-on:click="action_contracts" style="width: 150px">行纪合同</a-button>
+          </a-button-group>
+
         </div>
+
       </a-card>
       <a-card
         style="margin-top: 24px"
         :bordered="true"
-        title="所有合同"
       >
-        <a-list size="large">
-          <a-list-item :key="index" v-for="(c, index) in contracts">
-            <a-list-item-meta
-              
-            >
-              <a slot="title" :href="`#/list/user/` + c.id">{{c.title}}</a>
-            </a-list-item-meta>
-            <div slot="actions"> 
-              <a-dropdown>
-                <a-menu slot="overlay">
-                  <a-menu-item>
-                    <router-link :to="`/contract/${c.id}/sign`">
-                      {{c.signed?'重新签署':'签署'}}
-                    </router-link>
-                  </a-menu-item>
-                  
-                  <a-menu-item><a>删除</a></a-menu-item>
-                </a-menu>
-                <a>更多<a-icon type="down"/></a>
-              </a-dropdown>
-            </div>
-            <div class="list-content">
-              <div class="list-content-item">
-                <span>
-                  状态
-                </span>
-                <p>
-                  {{c.signed?'已签署':'待签署'}}
-                </p>
-              </div>
-              <div class="list-content-item">
-                <span>创建时间</span>
-                <p>
-                  {{c.createdTime}}
-                </p>
-              </div>
-            </div>
-          </a-list-item>
-        </a-list>
+        <a-table
+            rowKey="list_id"
+            size="default"
+            :columns="columns"
+            :dataSource="contracts"
+            :pagination="false"
+            :hideDefaultSelections="true"
+            :expandRowByClick="true"
+        >
+          ,<template slot="action" slot-scope="text,record" class="icon-select">
+            <router-link :to="`/contract/${record.id}/sign`">
+              <i class="el-icon-thumb" style="font-size: 25px"></i>
+            </router-link>
+            <router-link :to="`/contract/${record.id}/details`">
+              <i class="el-icon-document" style="font-size: 25px"></i>
+            </router-link>
+          </template>
+        </a-table>
+
       </a-card>
     </div>
   </template>
   
   <script>
   import HeadInfo from '../../components/tool/HeadInfo'
+  import axios from 'axios'
+  axios.defaults.withCredentials = false
   export default {
     name: 'StandardList',
-    components: {HeadInfo},
     data() {
       return {
-        contracts: []
-      }
-    },
-    created() {
-      // TODO: 可以改为通过API获取
-      this.contracts = [ 
+        contracts: [
           {
             id: 1,
-            title: "《销售合同》",
-            createdTime: "2022年5月5日",
+            name: "《销售合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 1
+          },
+          {
+            id: 2,
+            name: "《租赁合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 3,
+            name: "《销售合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 4,
+            name: "《租赁合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 5,
+            name: "《销售合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 6,
+            name: "《租赁合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+        ],
+        show_content: "所有合同",
+        columns:[
+          {
+            width: '60px',
+            title: '合同编号',
+            align: 'center',
+            dataIndex: 'id',
+            key: 'index'
+          },
+          {
+            width: '180px',
+            title: '合同名称',
+            align: 'center',
+            dataIndex: 'name',
+            key: 'name'
+          },
+          {
+            width: '180px',
+            title: '合同年限',
+            align: 'center',
+            dataIndex: 'year',
+            key: 'year'
+          },
+
+          {
+            width: '120px',
+            title: '合作对象',
+            align: 'center',
+            dataIndex: 'object',
+            key: 'object'
+          },
+          {
+            width: '120px',
+            title: '操作',
+            align: 'center',
+            scopedSlots: { customRender: 'action' },
+            key: 'item_meeting_list'
+          }
+        ]
+      }
+    },
+    methods: {
+      total_contracts() {
+        this.show_content = "所有合同"
+        this.contracts=[
+          {
+            id: 1,
+            name: "《销售合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
             signed: 0
           },
           {
             id: 2,
-            title: "《租赁合同》",
-            createdTime: "2022年5月6日",
-            signed: 1
+            name: "《租赁合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
           },
-      ]
+          {
+            id: 3,
+            name: "《销售合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 4,
+            name: "《租赁合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 5,
+            name: "《销售合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 6,
+            name: "《租赁合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+        ]
+      },
+      rent_contracts(){
+          this.contracts=[
+            {
+              id: 1,
+              name: "《销售合同》",
+              year: "2022年5月5日",
+              object:"盛泰舒",
+              signed: 0
+            },
+            {
+              id: 2,
+              name: "《租赁合同》",
+              year: "2022年5月5日",
+              object:"盛泰舒",
+              signed: 0
+            },
+        ]
+      },
+      borrow_contracts(){
+        this.contracts=[
+          {
+            id: 3,
+            name: "《销售合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 4,
+            name: "《租赁合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+        ]
+      },
+      give_contracts(){
+        this.contracts=[
+          {
+            id: 5,
+            name: "《销售合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+          {
+            id: 6,
+            name: "《租赁合同》",
+            year: "2022年5月5日",
+            object:"盛泰舒",
+            signed: 0
+          },
+        ]
+      },
+      action_contracts(){
+
+      },
     },
-    computed: {
-      getUnsignedNumber(){
-        let count = 0;
-        for(let i of this.contracts){
-          if(!i.signed){
-            count++;
-          }
-        }
-        return count;
-      }
-    }
   }
   </script>
   
