@@ -17,9 +17,9 @@
 
 ---
 
-完整模式图如下：
+合同部分完整模式图如下：
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220509214847780.png" alt="image-20220509214847780" style="zoom: 67%;" />
+![image-20220606090546395](https://cdn.jsdelivr.net/gh/Holmes233666/blogImage@main/img/image-20220606090546395.png)
 
 ## 2.三个接口
 
@@ -88,17 +88,49 @@
 
 ### 2.3 修改合同签署状态`/sign`
 
-功能描述：用户打开签署界面后签署完毕，需要通知后端修改合同状态——未签署改为已签署
+功能描述：用户打开签署界面后签署完毕，需要通知后端修改合同状态==并上传新的URL==——未签署改为已签署
 
 接口信息：
 
 - url地址：`服务器IP:端口/sign`
 - 请求方式：`post`
-- 参数：`contract_id`	
+- 参数：`contract_id`和`URL`
 
-服务器根据contract_id修改合同的签署状态为已签署（修改has_sign为1）。返回为只含有code的JSON。
+请求格式如下：
 
+```json
+{
+    "contract_id" : "1",
+    "URL" : <新的URL>
+}
+```
 
+服务器根据contract_id修改合同的签署状态为已签署（修改has_sign为1），==并修改合同表中的URL字段==。返回为只含有code的JSON。
 
+### 2.4 上传合同模板`/uploadtemplate`
 
+接口信息：
+
+- url地址：`服务器IP:端口/uploadtemplate`
+- 请求方式：`post`
+- 参数：`type`和`URL`
+
+这里需要给合同进行类别的编号：
+
+- 赠与合同：`1 (int)`
+- 借款合同：`2 (int)`
+- 租赁合同：`3 (int)`
+- 销售合同：`4 (int)`
+
+全为int类型。
+
+发送给后端的post请求格式如下：
+
+```json
+{
+    "type" : "3",
+    "URL": "https://cdn.jsdelivr.net/gh/xinwuyun/facedecSHOGOKI@main/src/assets/contracts/%E5%90%88%E5%90%8C1.pdf",
+    "template_name" : "一般销售合同"
+}
+```
 

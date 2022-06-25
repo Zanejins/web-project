@@ -42,11 +42,12 @@ public class HasSigned implements HttpHandler {
 
         // get two pieces of information from the jsonObject: user_id, uuid
         String contract_id = jsonObject.get("contract_id").toString();
+        String new_url = jsonObject.get("URL").toString();
 
         // get a conn
         Connection conn = getConnection();
 
         // SQL and return
-        return modifyHas_sign(conn, contract_id);
+        return modifyHas_sign(conn, contract_id, new_url);
     }
 }
